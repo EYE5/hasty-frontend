@@ -1,9 +1,10 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <el-container>
+    <el-header> </el-header>
+    <el-main>
+      <router-view />
+    </el-main>
+  </el-container>
 </template>
 
 <style>
@@ -26,5 +27,25 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+a {
+  text-decoration: none;
+  color: #2c3e50;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.form {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: none;
+  min-width: 300px;
+  max-width: 900px;
+  max-height: 600px;
+  min-height: 400px;
 }
 </style>
