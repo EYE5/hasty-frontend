@@ -8,11 +8,14 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
+  "types": "types/index.d.ts",
   "dependencies": {
+    "@aacassandra/vue3-progressbar": "^1.0.3",
     "axios": "^0.21.1",
     "axios-auth-refresh": "^3.1.0",
     "core-js": "^3.6.5",
     "element-plus": "^1.0.2-beta.44",
+    "equal-vue": "^0.74.0",
     "lodash": "^4.17.21",
     "register-service-worker": "^1.7.1",
     "vee-validate": "^3.4.5",

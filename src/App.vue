@@ -1,10 +1,7 @@
 <template>
-  <el-container>
-    <el-header> </el-header>
-    <el-main>
-      <router-view />
-    </el-main>
-  </el-container>
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <style>
@@ -38,14 +35,14 @@ a:hover {
   text-decoration: underline;
 }
 
-.form {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  border: none;
-  min-width: 300px;
-  max-width: 900px;
-  max-height: 600px;
-  min-height: 400px;
+.page-container {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-container {
+  margin: 5px 0;
 }
 </style>

@@ -1,17 +1,13 @@
-<template>
-  <RegisterForm />
-</template>
+<template>sd</template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
-import RegisterForm from "@/components/forms/register.vue";
 
 function setup() {
   return {};
 }
 
-export default defineComponent({ setup, components: { RegisterForm } });
+export default defineComponent({ setup });
 </script>
 
 <style></style>

@@ -1,6 +1,7 @@
 import { createApp } from "vue";
-import ElementPlus from "element-plus";
-import "element-plus/lib/theme-chalk/index.css";
+
+import Equal from "equal-vue";
+import "equal-vue/dist/style.css";
 import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
@@ -35,4 +36,27 @@ const refreshAuthLogic = async (failedRequest: {
 // register the refresh interceptor of tokens
 createAuthRefreshInterceptor(axios, refreshAuthLogic);
 
-createApp(App).use(router).use(ElementPlus).mount("#app");
+const app: Record<string, any> = createApp(App)
+  .use(router)
+  .use(Equal)
+
+  .mount("#app");
+
+axios.interceptors.request.use((config) => {
+  app.$Loading.start();
+
+  return config;
+});
+
+axios.interceptors.response.use(
+  (response) => {
+    app.$Loading.finish();
+
+    return response;
+  },
+  (error) => {
+    app.$Loading.finish();
+
+    return error;
+  }
+);

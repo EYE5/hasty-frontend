@@ -1,4 +1,3 @@
-import isEqual from "lodash/isEqual";
 import axios from "axios";
 import { tracked, calculated } from "@vueent/reactive";
 import { Service, registerService } from "@vueent/core";
@@ -38,7 +37,8 @@ export default class AuthorizationService extends Service {
     try {
       res = await api.login({ username, password });
     } catch (error) {
-      return;
+      //TODO: Add alert system
+      throw error;
     }
 
     const { accessToken, refreshToken, user } = res;
