@@ -16,7 +16,7 @@ export async function register(data: requests.Register) {
 export async function refresh(
   data: requests.Refresh
 ): Promise<responses.Refresh> {
-  const res = await axios.post("/updateTokens", data);
+  const res = await axios.post("/refresh", data);
 
   return res.data;
 }

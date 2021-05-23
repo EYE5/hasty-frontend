@@ -1,8 +1,27 @@
 <template>
-  <div>
-    <router-view />
+  <div class="page-container">
+    <Loader v-if="loading" size="150px" />
+    <router-view v-else />
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent, computed } from "vue";
+import { useController } from "@vueent/core";
+
+import AppController from "./app";
+import Loader from "@/components/reusable/global-loader.vue";
+
+function setup() {
+  const controller = useController(AppController);
+
+  const loading = computed(() => controller.isLoading);
+
+  return { loading };
+}
+
+export default defineComponent({ setup, components: { Loader } });
+</script>
 
 <style>
 body {
@@ -84,5 +103,10 @@ a:hover {
 .alert {
   max-width: 300px;
   box-sizing: border-box;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
 }
 </style>

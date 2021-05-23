@@ -10,6 +10,7 @@ import { useService } from "@vueent/core";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 import AuthorizationService from "./services/authorization";
+import LoadingService from "./services/loading";
 import { API_ROOT } from "./constants";
 
 axios.defaults.baseURL = API_ROOT;
@@ -39,11 +40,11 @@ createAuthRefreshInterceptor(axios, refreshAuthLogic);
 const app: Record<string, any> = createApp(App)
   .use(router)
   .use(Equal)
-
   .mount("#app");
 
 axios.interceptors.request.use((config) => {
   app.$Loading.start();
+  useService(LoadingService).setLoading(true);
 
   return config;
 });
@@ -51,11 +52,13 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   (response) => {
     app.$Loading.finish();
+    useService(LoadingService).setLoading(false);
 
     return response;
   },
   (error) => {
     app.$Loading.finish();
+    useService(LoadingService).setLoading(false);
 
     throw error;
   }

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { tracked, calculated } from "@vueent/reactive";
 import { Service, registerService } from "@vueent/core";
 
@@ -9,38 +8,48 @@ import {
   Data as User,
 } from "@/models/user/user";
 
-import {
-  Data as Friend,
-  create as createFriendModel,
-} from "@/models/user/friend";
+import { create as createFriendModel } from "@/models/user/friend";
 
 export default class UserService extends Service {
   @tracked private _item?: UserModel;
 
   @calculated public get item() {
+    console.log("calculated", this._item);
     return this._item;
   }
 
-  public async getUser() {
-    if (!this._item?.data.id) return;
+  public setItem(data: User) {
+    this._item = createUserModel(data);
+  }
 
-    const id = this._item.data.id;
+  public free() {
+    this._item?.destroy();
+    this._item = undefined;
+  }
+
+  public async getUser(id?: string) {
+    console.log(id);
+
+    if (!this._item?.data.id && !id) return;
+
+    const userId = id ? id : this._item!.data.id;
 
     let res;
 
     try {
-      res = await api.get({ id });
+      res = await api.get({ id: userId! });
     } catch (error) {
       return;
     }
 
     const friends = res.friends.map((item) => createFriendModel(item));
 
-    this._item.destroy();
     this._item = createUserModel({
       ...res,
       friends,
     });
+
+    console.log(this._item);
   }
 
   public async getFriends() {

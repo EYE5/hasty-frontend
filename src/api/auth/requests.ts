@@ -7,4 +7,5 @@ export type Register = RegisterData;
 
 export interface Refresh {
   refreshToken: string;
+  id: string;
 }

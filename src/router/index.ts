@@ -7,17 +7,18 @@ import {
 } from "vue-router";
 import Login from "@/routes/login.vue";
 import Register from "@/routes/register.vue";
+import Chats from "@/routes/chats.vue";
 
-import UserService from "@/services/user";
+import AuthorizationService from "@/services/authorization";
 
 function ifNotAuthenticated() {
-  const authenticated = Boolean(useService(UserService).item);
+  const authenticated = Boolean(useService(AuthorizationService).item);
 
   if (!authenticated) return "/login";
 }
 
 function ifAuthenticated() {
-  const authenticated = Boolean(useService(UserService).item);
+  const authenticated = Boolean(useService(AuthorizationService).item);
 
   if (authenticated) return "/";
 }
@@ -34,6 +35,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "Register",
     component: Register,
     beforeEnter: ifAuthenticated,
+  },
+  {
+    path: "/",
+    name: "Chats",
+    component: Chats,
+    beforeEnter: ifNotAuthenticated,
   },
 ];
 

@@ -1,10 +1,14 @@
 import axios from "axios";
 import { tracked, calculated } from "@vueent/reactive";
-import { Service, registerService } from "@vueent/core";
+import {
+  Service,
+  registerService,
+  injectService as service,
+} from "@vueent/core";
 
 import { Tokens } from "@/models/auth/tokens";
-
 import * as api from "@/api/auth";
+import UserService from "./user";
 
 export interface RefreshWatcher {
   resolve: (tokens: Tokens) => void;
@@ -12,6 +16,8 @@ export interface RefreshWatcher {
 }
 
 export default class AuthorizationService extends Service {
+  @service(UserService) user!: UserService;
+
   @tracked private _loading = false;
   @tracked private _tokens?: Tokens;
   private _refresherWatchers: RefreshWatcher[] = [];
@@ -21,13 +27,18 @@ export default class AuthorizationService extends Service {
     return this._loading;
   }
 
+  @calculated public get item() {
+    return this.user.item;
+  }
+
   constructor() {
     super();
 
-    const { accessToken, refreshToken } = this.loadLocalData();
+    const { accessToken, refreshToken, id } = this.loadLocalData();
 
     if (accessToken && refreshToken) {
       this.updateTokens({ accessToken, refreshToken });
+      this.user.getUser(id);
     }
   }
 
@@ -35,28 +46,21 @@ export default class AuthorizationService extends Service {
     const res = await api.login({ username, password });
 
     const { accessToken, refreshToken, user } = res;
+
+    this.user.setItem(user);
+
+    this.saveLocalData(accessToken, refreshToken, user.id!);
   }
 
   public async register(username: string, password: string) {
-    const res = await api.register({ username, password });
+    await api.register({ username, password });
   }
 
   public async refresh(topLevelError?: unknown): Promise<Tokens> {
-    const { accessToken, refreshToken, username } = this.loadLocalData();
+    //TODO: Add username checking
 
-    if (
-      username &&
-      refreshToken &&
-      accessToken
-      // TODO: && !isEqual(this._accountModel?.data, username)
-    ) {
-      const tokens: Tokens = { accessToken, refreshToken };
-
-      // TODO:this.updateAccountModel(account);
-      this.updateTokens(tokens);
-
-      return tokens;
-    } else if (this._refreshing)
+    const { refreshToken, id } = this.loadLocalData();
+    if (this._refreshing)
       return new Promise((resolve, reject) =>
         this._refresherWatchers.push({ resolve, reject })
       );
@@ -65,13 +69,13 @@ export default class AuthorizationService extends Service {
 
     let tokens: Tokens;
 
-    if (!refreshToken) throw new Error("Could not load a refresh token");
+    if (!refreshToken || !id) throw new Error("Could not load a refresh token");
 
     try {
-      tokens = await api.refresh({ refreshToken });
+      tokens = await api.refresh({ refreshToken, id });
     } catch (error) {
       this.setRefreshing(false);
-      // TODO:this.logout();
+      this.logout();
 
       throw topLevelError ?? error;
     }
@@ -90,8 +94,8 @@ export default class AuthorizationService extends Service {
 
   private updateTokens(tokens: Tokens, save = false) {
     if (save) {
-      localStorage.setItem("access-token", tokens.accessToken);
-      localStorage.setItem("refresh-token", tokens.refreshToken);
+      localStorage.setItem("accessToken", tokens.accessToken);
+      localStorage.setItem("refreshToken", tokens.refreshToken);
     }
 
     this._tokens = tokens;
@@ -103,11 +107,11 @@ export default class AuthorizationService extends Service {
     const data: {
       refreshToken?: string;
       accessToken?: string;
-      username?: string;
+      id?: string;
     } = {
       refreshToken: undefined,
       accessToken: undefined,
-      username: undefined,
+      id: undefined,
     };
 
     data.refreshToken = localStorage.getItem("refreshToken") ?? undefined;
@@ -118,11 +122,29 @@ export default class AuthorizationService extends Service {
 
     if (!data.accessToken) return data;
 
-    data.username = localStorage.getItem("username") ?? undefined;
+    data.id = localStorage.getItem("id") ?? undefined;
 
-    if (!data.username) return data;
+    if (!data.id) return data;
 
     return data;
+  }
+
+  private saveLocalData(accessToken: string, refreshToken: string, id: string) {
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("id", id);
+  }
+
+  private logout() {
+    //TODO add route for logout
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("id");
+
+    delete axios.defaults.headers.common["Authorization"];
+
+    this.user.free();
   }
 }
 
