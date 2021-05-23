@@ -1,7 +1,9 @@
 <template>
-  <div class="page-container">
-    <Loader v-if="loading" size="150px" />
-    <router-view v-else />
+  <div>
+    <div class="page-container">
+      <Loader v-if="loading" size="150px" />
+      <router-view v-else />
+    </div>
   </div>
 </template>
 
@@ -58,9 +60,16 @@ a:hover {
   text-decoration: underline;
 }
 
+.header-container {
+  display: flex;
+  height: 10vh;
+
+  flex-direction: row;
+}
+
 .page-container {
   display: flex;
-  height: 100vh;
+  height: 90vh;
   justify-content: center;
   align-items: center;
   flex-direction: column;

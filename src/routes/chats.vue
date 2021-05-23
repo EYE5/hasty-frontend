@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="page-container">
     <div v-if="!items.length" class="empty">
-      <it-icon name="face" color="#3051FF" size="20" />
+      <it-icon name="info" color="#3051FF" size="20" />
       Чатов не найдено. Создайте новый!
     </div>
     <div v-else class="chat-list">
@@ -36,6 +36,6 @@ export default defineComponent({ setup });
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: flex-start !important;
 }
 </style>
