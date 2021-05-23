@@ -23,7 +23,7 @@ const validations = {
 
 export interface Validations extends ValidationBase {
   readonly c: {
-    name: ValidationBase;
+    username: ValidationBase;
     password: ValidationBase;
   };
 }

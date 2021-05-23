@@ -5,6 +5,10 @@
 </template>
 
 <style>
+body {
+  margin: 0;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -28,7 +32,7 @@
 
 a {
   text-decoration: none;
-  color: #2c3e50;
+  color: black;
 }
 
 a:hover {
@@ -40,9 +44,45 @@ a:hover {
   height: 100vh;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .input-container {
   margin: 5px 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.sm-text {
+  font-size: 14px;
+}
+
+.ml-15 {
+  margin-left: 15px;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  max-width: 600px;
+  max-height: 400px;
+}
+
+.alert {
+  max-width: 300px;
+  box-sizing: border-box;
 }
 </style>

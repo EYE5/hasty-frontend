@@ -57,6 +57,6 @@ axios.interceptors.response.use(
   (error) => {
     app.$Loading.finish();
 
-    return error;
+    throw error;
   }
 );

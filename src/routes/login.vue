@@ -1,5 +1,12 @@
 <template>
   <div class="page-container">
+    <it-alert
+      v-if="Boolean(alert)"
+      :type="alert.type"
+      :title="alert.title"
+      :body="alert.body"
+      class="alert mb-15"
+    />
     <form class="form" @submit.prevent="login">
       <div class="input-container">
         <it-input
@@ -14,13 +21,17 @@
         <it-input
           v-model="item.data.password"
           label-top="Пароль"
+          type="password"
           placeholder="Введите пароль"
           :status="item.v.c.password.dirtyMessage ? 'danger' : undefined"
           :message="item.v.c.password.dirtyMessage"
         />
       </div>
-      <div class="input-container">
+      <div class="input-container row space-between">
         <it-button type="primary">Войти</it-button>
+        <router-link class="sm-text ml-15" to="/register">
+          Регистрация
+        </router-link>
       </div>
     </form>
   </div>
@@ -37,21 +48,13 @@ function setup() {
   const controller = useController(LoginController);
 
   const item = computed(() => controller.item);
-  const loading = computed(() => controller.loading);
+
+  const alert = computed(() => controller.alert);
 
   const login = controller.login.bind(controller);
 
-  return { item, loading, login };
+  return { item, login, alert };
 }
 
 export default defineComponent({ setup });
 </script>
-
-<style>
-.form {
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  max-height: 400px;
-}
-</style>

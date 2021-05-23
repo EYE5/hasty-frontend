@@ -1,23 +1,11 @@
 import { Base, BaseModel } from "@vueent/mix-models";
 
-import { Data as Chat } from "@/models/chat/chat";
-import { ModelType as Friend, Data as FriendEncoded } from "./friend";
-
 export interface Data {
-  id?: "";
+  id: string;
   username: string;
   userInfo: string;
-  chats: Chat[];
-  friends: Friend[];
-  avatar?: string;
-}
-
-export interface EncodedData {
-  id?: "";
-  username: string;
-  userInfo: string;
-  chats: Chat[];
-  friends: FriendEncoded[];
+  lastOnline: number;
+  online: boolean;
   avatar?: string;
 }
 
@@ -28,10 +16,11 @@ export class Model extends DataModel {
     super(
       "name",
       initialData ?? {
+        id: "",
         username: "",
         userInfo: "",
-        chats: [],
-        friends: [],
+        online: false,
+        lastOnline: Date.now(),
       },
       react
     );

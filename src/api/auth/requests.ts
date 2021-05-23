@@ -1,11 +1,9 @@
-import { Data } from "@/models/auth/login";
+import { Data as LoginData } from "@/models/auth/login";
+import { Data as RegisterData } from "@/models/auth/register";
 
-export type Login = Data;
+export type Login = LoginData;
 
-export interface Register {
-  username: string;
-  password: string;
-}
+export type Register = RegisterData;
 
 export interface Refresh {
   refreshToken: string;

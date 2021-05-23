@@ -10,7 +10,7 @@ import {
 import v9s from "@/vendor/v9s";
 
 export interface Data {
-  name: string;
+  username: string;
   password: string;
 }
 
@@ -23,7 +23,7 @@ const validations = {
 
 export interface Validations extends ValidationBase {
   readonly c: {
-    name: ValidationBase;
+    username: ValidationBase;
     password: ValidationBase;
   };
 }
@@ -36,7 +36,7 @@ export class Model extends mix<Data, typeof DataModel>(
   mixValidate<Data, typeof DataModel, Validations>(validations)
 ) {
   constructor(initialData?: Data, react = true) {
-    super("name", initialData ?? { name: "", password: "" }, react);
+    super("name", initialData ?? { username: "", password: "" }, react);
   }
 }
 

@@ -32,26 +32,13 @@ export default class AuthorizationService extends Service {
   }
 
   public async login(username: string, password: string) {
-    let res;
-
-    try {
-      res = await api.login({ username, password });
-    } catch (error) {
-      //TODO: Add alert system
-      throw error;
-    }
+    const res = await api.login({ username, password });
 
     const { accessToken, refreshToken, user } = res;
   }
 
   public async register(username: string, password: string) {
-    let res;
-
-    try {
-      res = await api.register({ username, password });
-    } catch (error) {
-      return;
-    }
+    const res = await api.register({ username, password });
   }
 
   public async refresh(topLevelError?: unknown): Promise<Tokens> {
