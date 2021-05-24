@@ -43,7 +43,6 @@ const app: Record<string, any> = createApp(App)
   .mount("#app");
 
 axios.interceptors.request.use((config) => {
-  app.$Loading.start();
   useService(LoadingService).setLoading(true);
 
   return config;
@@ -51,13 +50,11 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   (response) => {
-    app.$Loading.finish();
     useService(LoadingService).setLoading(false);
 
     return response;
   },
   (error) => {
-    app.$Loading.finish();
     useService(LoadingService).setLoading(false);
 
     throw error;

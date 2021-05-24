@@ -56,6 +56,18 @@ export default class AuthorizationService extends Service {
     await api.register({ username, password });
   }
 
+  public logout() {
+    //TODO add route for logout
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("id");
+
+    delete axios.defaults.headers.common["Authorization"];
+
+    this.user.free();
+  }
+
   public async refresh(topLevelError?: unknown): Promise<Tokens> {
     //TODO: Add username checking
 
@@ -133,18 +145,6 @@ export default class AuthorizationService extends Service {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("id", id);
-  }
-
-  private logout() {
-    //TODO add route for logout
-
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("id");
-
-    delete axios.defaults.headers.common["Authorization"];
-
-    this.user.free();
   }
 }
 

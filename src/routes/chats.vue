@@ -1,6 +1,6 @@
 <template>
-  <div class="page-container">
-    <div v-if="!items.length" class="empty">
+  <div class="chat">
+    <div v-if="!items || !items.length" class="empty">
       <it-icon name="info" color="#3051FF" size="20" />
       Чатов не найдено. Создайте новый!
     </div>
@@ -9,6 +9,8 @@
         {{ item.name }}
       </div>
     </div>
+
+    <div class="messenger-container">im visible</div>
   </div>
 </template>
 
@@ -29,13 +31,3 @@ function setup() {
 
 export default defineComponent({ setup });
 </script>
-
-<style>
-.chat-list {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start !important;
-}
-</style>

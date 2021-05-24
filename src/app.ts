@@ -10,10 +10,12 @@ import router from "@/router";
 
 import UserService from "@/services/user";
 import LoadingService from "./services/loading";
+import AuthorizationService from "./services/authorization";
 
 export default class AppController extends Controller {
   @service(UserService) user!: UserService;
   @service(LoadingService) loading!: LoadingService;
+  @service(AuthorizationService) authorization!: AuthorizationService;
 
   @calculated public get authenticated() {
     return Boolean(this.user.item);
@@ -32,6 +34,10 @@ export default class AppController extends Controller {
       },
       { immediate: true }
     );
+  }
+
+  public logout() {
+    this.authorization.logout();
   }
 }
 
